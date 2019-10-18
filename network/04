@@ -1,0 +1,1 @@
+eval netstat -rn | grep 'default' | grep 'en0'
