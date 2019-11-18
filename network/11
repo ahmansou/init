@@ -1,1 +1,1 @@
-10.21.1.1 is the address of the device that makes the link between the local network and the outside world, the process is caled NAT, and it's the service that translate multiple local IP adresses into one or more global IP addresses.
+10.21.1.1 is the address of the device that makes the link between the local network and the outside world, the process is caled NAT (Network Adresse translation), and it's the service that translate multiple local IP adresses into one or more global IP addresses.

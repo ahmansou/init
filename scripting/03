@@ -1,0 +1,5 @@
+#!/bin/bash/
+echo "Enter your web site that you wanna count how much links in\n"
+read website
+count=$(curl -L $website | grep -o "href" | wc -l)
+echo "Result is : $count \n"

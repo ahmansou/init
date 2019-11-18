@@ -1,0 +1,1 @@
+use "su - [username]" for the graphic session and "ssh [username]@[ip]" for ssh session

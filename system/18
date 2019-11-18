@@ -1,1 +1,1 @@
-service ssh stop
+killall sshd
