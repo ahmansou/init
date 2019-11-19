@@ -1,1 +1,2 @@
-use "su - [username]" for the graphic session and "ssh [username]@[ip]" for ssh session
+type your login and password when asked for the graphic session
+"ssh [username]@[ip]" and type your password for ssh session
