@@ -1,1 +1,1 @@
-pkill $!
+kill -9 `ps aux | grep "tail -f" | awk '{print $2}' | head -1`

@@ -1,1 +1,1 @@
-cat /etc/passwd | grep home | awk -F: '{print }'
+cat /etc/passwd | grep "/bin/bash" | cut -d : -f 1

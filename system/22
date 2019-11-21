@@ -1,1 +1,1 @@
-sudo useradd banana
+sudo adduser banana
