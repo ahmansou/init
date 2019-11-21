@@ -1,4 +1,4 @@
 #!/bin/bash/
-user=$1
-$(killall -s SIGKILL -u $user)
-$(sudo userdel $user)
+sudo kill -9 `ps aux | grep ^$1 | awk '{print $2}'`
+sudo userdel --force $1
+sudo rm -r /home/$1
