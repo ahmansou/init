@@ -1,5 +1,34 @@
 #!/bin/bash/
-echo "Enter your web site that you wanna count how much links in\n"
-read website
-count=$(curl -L $website | grep -o "href" | wc -l)
-echo "Result is : $count \n"
+# This script lets you initialize a new project workspace with your libft, 
+# ft_printf and other useful directories
+# usage : 
+# sh 03 <project name> <libft folder path> <ft_printf folder path> <username>
+
+if [ $# -ne 4 ]; then
+    echo "usage : 
+    sh 03 <project name> <libft folder path> <ft_printf folder path> <username>"
+else
+    NAME=$1
+    LIBFT=$2
+    FT_PRINTF=$3
+    AUTHOR=$4
+    mkdir $NAME
+    cp -a $LIBFT $NAME/libft
+    cp -a $FT_PRINTF $NAME/ft_printf
+    rm -rf $NAME/ft_printf/libft
+    sed 's/..\/libft\/libft.h/..\/..\/libft\/libft.h/g'\
+        $NAME/ft_printf/src/ft_printf.h > $NAME/ft_printf/src/ft_printf1.h
+    rm $NAME/ft_printf/src/ft_printf.h
+    rm $NAME/ft_printf/README.md
+    rm $NAME/ft_printf/author
+    rm $NAME/libft/author
+    rm -rf $NAME/libft/.git
+    rm -rf $NAME/ft_printf/.git
+    find $NAME -name \*.DS_Store -type f -delete
+    mv $NAME/ft_printf/src/ft_printf1.h $NAME/ft_printf/src/ft_printf.h
+    mkdir $NAME/src
+    mkdir $NAME/include
+    touch $NAME/src/$NAME.h
+    touch $NAME/Makefile
+    echo $AUTHOR > $NAME/author
+fi
