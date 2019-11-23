@@ -2,44 +2,45 @@
 # This script lets you initialize a new project workspace with your libft, 
 # ft_printf and other useful directories
 # usage : 
-# sh 03 <project name> <libft folder path> <ft_printf folder path> <username>
+# sh 03 <project name> <1 to clone libft 0 to not> <1 to clone ft_printf 0 to not> <username>"
 
 if [ $# -ne 4 ]; then
-    echo "usage : 
-    sh 03 <project name> <libft folder path> <ft_printf folder path> <username>"
+	echo "usage : 
+	sh 03 <project name> <1 to clone libft 0 to not> <1 to clone ft_printf 0 to not> <username>"
 else
-    REPO_NAME=$1
-    LIBFT=$2
-    FT_PRINTF=$3
-    AUTHOR=$4
-    # init 
-    curl -u $AUTHOR https://api.github.com/user/repos -d\
-        "{\"name\":\"$REPO_NAME\"}"
-    git clone https://github.com/$AUTHOR/$REPO_NAME.github
-    # init project
-    cp -a $LIBFT $REPO_NAME/libft
-    cp -a $FT_PRINTF $REPO_NAME/ft_printf
-    rm -rf $REPO_NAME/ft_printf/libft
-    sed 's/..\/libft\/libft.h/..\/..\/libft\/libft.h/g'\
-        $REPO_NAME/ft_printf/src/ft_printf.h >\
-        $REPO_NAME/ft_printf/src/ft_printf1.h
-    rm $REPO_NAME/ft_printf/src/ft_printf.h
-    rm $REPO_NAME/ft_printf/README.md
-    rm $REPO_NAME/ft_printf/author
-    rm $REPO_NAME/libft/author
-    rm -rf $REPO_NAME/libft/.git
-    rm -rf $REPO_NAME/ft_printf/.git
-    find $REPO_NAME -name \*.DS_Store -type f -delete
-    mv  $REPO_NAME/ft_printf/src/ft_printf1.h\
-        $REPO_NAME/ft_printf/src/ft_printf.h
-    mkdir $REPO_NAME/src
-    mkdir $REPO_NAME/include
-    touch $REPO_NAME/src/$REPO_NAME.h
-    # touch $REPO_NAME/Makefile
-    DATE=$(date "+%Y/%m/%d")
-    TIME=$(date "+%T")
-    # echo $DATE
-    echo "# **************************************************************************** #
+	REPO_NAME=$1
+	LIBFT=$2
+	FT_PRINTF=$3
+	AUTHOR=$4
+	# init 
+	curl -u $AUTHOR https://api.github.com/user/repos -d "{\"name\":\"$REPO_NAME\"}"
+	git clone https://github.com/$AUTHOR/$REPO_NAME
+	# init project
+	if [ "$LIBFT" == "1" ]; then
+		git clone https://github.com/$AUTHOR/libft $REPO_NAME/libft
+		rm $REPO_NAME/libft/author
+		rm -rf $REPO_NAME/libft/.git
+		# cp -a $LIBFT $REPO_NAME/libft
+	fi
+	if [ "$FT_PRINTF" == "1" ]; then
+		git clone https://github.com/$AUTHOR/ft_printf $REPO_NAME/ft_printf
+		cp -a $FT_PRINTF $REPO_NAME/ft_printf
+		rm -rf $REPO_NAME/ft_printf/libft
+		sed 's/..\/libft\/libft.h/..\/..\/libft\/libft.h/g' $REPO_NAME/ft_printf/src/ft_printf.h > $REPO_NAME/ft_printf/src/ft_printf1.h
+		rm $REPO_NAME/ft_printf/src/ft_printf.h
+		mv  $REPO_NAME/ft_printf/src/ft_printf1.h $REPO_NAME/ft_printf/src/ft_printf.h
+		rm $REPO_NAME/ft_printf/README.md
+		rm $REPO_NAME/ft_printf/author
+		rm -rf $REPO_NAME/ft_printf/.git
+		find $REPO_NAME -name \*.DS_Store -type f -delete
+	fi
+	mkdir $REPO_NAME/src
+	mkdir $REPO_NAME/include
+	touch $REPO_NAME/src/$REPO_NAME.h
+	# touch $REPO_NAME/Makefile
+	DATE=$(date "+%Y/%m/%d")
+	TIME=$(date "+%T")
+	echo "# **************************************************************************** #
 #                                                                              #
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
@@ -50,12 +51,45 @@ else
 #    Updated: $DATE $TIME by $AUTHOR         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #" > $REPO_NAME/Makefile
-    echo $AUTHOR > $REPO_NAME/author
-    # init git repo
-    # git init
-    cd $REPO_NAME
-    git add -A
-    git commit -m "init repo"
-    git push
-    cd ..
+	echo "
+NAME = $REPO_NAME
+SRCS = 
+OBJS = \$(SRCS:.c=.o) 
+FLG = -Wall -Werror -Wextra
+
+\$(NAME): \$(OBJS)
+	make -C libft" >> $REPO_NAME/Makefile
+	if [ "$FT_PRINTF" == "1" ]; then
+		echo "	make -C ft_printf
+	gcc -o \$(NAME) \$(FLG) \$(OBJS) libft/libft.a ft_printf/libftprintf.a" >> $REPO_NAME/Makefile
+	else
+		echo "	gcc -o \$(NAME) \$(FLG) \$(OBJS) libft/libft.a" >> $REPO_NAME/Makefile
+	fi
+	echo "
+clean:
+	make clean -C libft" >> $REPO_NAME/Makefile
+	if [ "$FT_PRINTF" == "1" ]; then
+		echo "	make fclean -C ft_printf" >> $REPO_NAME/Makefile
+	fi
+	echo "	rm -f \$(OBJS)
+
+fclean: clean
+	make fclean -C libft" >> $REPO_NAME/Makefile
+	if [ "$FT_PRINTF" == "1" ]; then
+		echo "	make fclean -C ft_printf" >> $REPO_NAME/Makefile
+	fi
+	echo "	rm -f \$(NAME) 
+
+re: fclean all
+
+all : \$(NAME)" >> $REPO_NAME/Makefile
+	# echo $DATE
+	echo $AUTHOR > $REPO_NAME/author
+	# init git repo
+	# git init
+	cd $REPO_NAME
+	git add -A
+	git commit -m "init repo"
+	git push
+	cd ..
 fi
