@@ -35,7 +35,7 @@ else
     mkdir $REPO_NAME/src
     mkdir $REPO_NAME/include
     touch $REPO_NAME/src/$REPO_NAME.h
-    touch $REPO_NAME/Makefile
+    # touch $REPO_NAME/Makefile
     DATE=$(date "+%Y/%m/%d")
     TIME=$(date "+%T")
     # echo $DATE
@@ -49,7 +49,7 @@ else
 #    Created: $DATE $TIME by $AUTHOR          #+#    #+#              #
 #    Updated: $DATE $TIME by $AUTHOR         ###   ########.fr        #
 #                                                                              #
-# **************************************************************************** #"
+# **************************************************************************** #" > $REPO_NAME/Makefile
     echo $AUTHOR > $REPO_NAME/author
     # init git repo
     # git init
