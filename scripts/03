@@ -12,7 +12,7 @@ else
 	LIBFT=$2
 	FT_PRINTF=$3
 	AUTHOR=$4
-	# init 
+	# init repo
 	curl -u $AUTHOR https://api.github.com/user/repos -d "{\"name\":\"$REPO_NAME\"}"
 	git clone https://github.com/$AUTHOR/$REPO_NAME
 	# init project
@@ -54,7 +54,7 @@ else
 	echo "
 NAME = $REPO_NAME
 SRCS = 
-OBJS = \$(SRCS:.c=.o) 
+OBJS = \$(SRCS:.c=.o)
 FLG = -Wall -Werror -Wextra
 
 \$(NAME): \$(OBJS)
@@ -85,8 +85,7 @@ re: fclean all
 all : \$(NAME)" >> $REPO_NAME/Makefile
 	# echo $DATE
 	echo $AUTHOR > $REPO_NAME/author
-	# init git repo
-	# git init
+	# push items
 	cd $REPO_NAME
 	git add -A
 	git commit -m "init repo"
